@@ -16,6 +16,7 @@ pipeline {
         DOCKER_PASS = 'docker'
         IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
         IMAGE_TAG = "${RELEASE}" + "-" + "${BUILD_NUMBER}"
+        TMDB_V3_API_KEY = 'TMDB-key'
     }
 
     stages {
