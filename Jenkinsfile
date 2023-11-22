@@ -10,6 +10,12 @@ pipeline {
 
      environment {
         SCANNER_HOME=tool 'sonar-scanner'
+        APP_NAME = "netflix-clone"
+        RELEASE = "1.0.0"
+        DOCKER_USER = "rajat202011061"
+        DOCKER_PASS = 'docker'
+        IMAGE_NAME = "${DOCKER_USER}" + "/" + "${APP_NAME}"
+        IMAGE_TAG = "${RELEASE}" + "-" + "${BUILD_NUMBER}"
     }
 
     stages {
@@ -52,6 +58,20 @@ pipeline {
             steps {
                 dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
                 dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+
+        stage("Build and Push Docker Image") {
+            steps {
+                script {
+                    docker.withRegistry('', DOCKER_PASS) {
+                        docker_image = docker.build("${IMAGE_NAME}")
+                    }
+                    docker.withRegistry('', DOCKER_PASS) {
+                        docker_image.push("${IMAGE_TAG}")
+                        docker_image.push("latest")
+                    }
+                }
             }
         }
 
