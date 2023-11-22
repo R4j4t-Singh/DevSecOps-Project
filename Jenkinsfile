@@ -76,6 +76,10 @@ pipeline {
             }
         }
 
+        steps("Trivy") {
+            sh "trivy image ${IMAGE_NAME}:${IMAGE_TAG} --no-progress --scanners vuln  --exit-code 0 --severity HIGH,CRITICAL --format table"
+        }
+
     }
     
 }
