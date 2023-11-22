@@ -14,10 +14,11 @@ pipeline {
                 cleanWs()
             }
         }
-    }
-    stage("Checkout from SCM"){
-        steps{
-            git branch: 'main', url: 'https://github.com/R4j4t-Singh/DevSecOps-Project'
+
+        stage("Checkout from SCM"){
+            steps{
+                git branch: 'main', url: 'https://github.com/R4j4t-Singh/DevSecOps-Project'
+            }
         }
     }
     
