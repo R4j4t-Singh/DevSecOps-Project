@@ -47,6 +47,14 @@ pipeline {
                 sh "npm install"
             }
         }
+
+        stage("OWASP dependency check") {
+            steps {
+                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', odcInstallation: 'DP-Check'
+                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+            }
+        }
+
     }
     
 }
