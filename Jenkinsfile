@@ -20,6 +20,15 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/R4j4t-Singh/DevSecOps-Project'
             }
         }
+
+        stage("SonarQube Analysis") {
+            steps{
+                withSonarQubeEnv(credentialsId: 'sonar-token') {
+                    sh ''' $SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=Netflix \
+                -Dsonar.projectKey=Netflix '''
+                }
+            }
+        }
     }
     
 }
