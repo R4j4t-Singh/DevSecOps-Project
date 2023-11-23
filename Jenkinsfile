@@ -72,7 +72,7 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('', DOCKER_PASS) {
-                        docker_image = docker.build("${IMAGE_NAME}")
+                        docker_image = docker.build("${IMAGE_NAME}, --build-arg  TMDB_V3_API_KEY=${TMDB_V3_API_KEY}")
                     }
                     docker.withRegistry('', DOCKER_PASS) {
                         docker_image.push("${IMAGE_TAG}")
