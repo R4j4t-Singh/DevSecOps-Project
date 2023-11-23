@@ -70,14 +70,10 @@ pipeline {
 
         stage("Build and Push Docker Image") {
             steps {
-                script {
-                    docker.withRegistry('', DOCKER_PASS) {
-                        docker_image = docker.build("${IMAGE_NAME}", "--build-arg  TMDB_V3_API_KEY=${TMDB_V3_API_KEY}")
-                    }
-                    docker.withRegistry('', DOCKER_PASS) {
-                        docker_image.push("${IMAGE_TAG}")
-                        docker_image.push("latest")
-                    }
+                withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){   
+                    sh "docker build --build-arg TMDB_V3_API_KEY=${TMDB_V3_API_KEY} -t ${IMAGE_NAME}:${IMAGE_TAG} ."
+                    sh "docker tag ${IMAGE_NAME}:${IMAGE_TAG} ${IMAGE_NAME}:latest "
+                    sh "docker push  ${IMAGE_NAME}:latest"
                 }
             }
         }
